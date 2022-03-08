@@ -1,4 +1,6 @@
 const Coupon=require('../models/Coupon')
+const axios = require('axios');
+require('dotenv').config();
 
 
 const jwt = require('jsonwebtoken')
@@ -118,6 +120,29 @@ const filterStatus=async(req,res,next)=>{
         response:getdata
     })
 }
+
+
+const createTo=async(req,res,next)=> {
+    try {
+        let response = await axios({
+            method: "GET",
+            url: process.env.GET_ID,
+            headers: {
+                contentType: "application/json",
+            }
+        })
+        console.log(response);
+        res.status(200).json({ 
+            response:response.data
+        })
+    } 
+    catch(error){
+        res.status(400).json({
+            message:error
+        })
+    }
+  }
+
 module.exports={
-    create,update,show,searchCode,searchName,sortTime,filterStatus
+    create,update,show,searchCode,searchName,sortTime,filterStatus,createTo
 }
